@@ -3,10 +3,10 @@ description: "Greet someone"
 author: "octocat@github.com"
 
 inputs:
-  MY_NAME:
-    description: "Who to greet"
+  allowedStatusCodes:
+    description: "Status code which links are allowed to return"
     required: true
-    default: "World"
+    default: 200
 
 runs:
   using: "docker"
