@@ -22,6 +22,8 @@ func main() {
 	links := GetHtmlTags(htmlParsed, "a", "href", nil)
 	ms, _ := time.ParseDuration("0.35s")
 	var badLinks []string
+	statusCodes := os.Getenv("ALLOWED_STATUS_CODES")
+	fmt.Println("status codes", statusCodes)
 	if len(links) < 1 {
 		fmt.Println("No links found.")
 	} else {

@@ -1,4 +1,4 @@
-name: A workflow that check if links in README.md is functional
+name: A workflow that check if links in README.md is working
 on: push
 jobs:
   build:
@@ -7,3 +7,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: LeandroLS/linksnitch@main
+      with:
+        allowedStatusCodes: '["200", "201"]'
