@@ -1,0 +1,9 @@
+name: A workflow that check if links in README.md is functional
+on: push
+jobs:
+  build:
+    name: Check if README.md links workds
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./action
