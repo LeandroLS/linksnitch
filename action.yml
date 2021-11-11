@@ -1,6 +1,6 @@
-name: "Hello Actions"
-description: "Greet someone"
-author: "octocat@github.com"
+name: "linksnitch action"
+description: "Check if links in README.md is working"
+author: "https://github.com/LeandroLS"
 
 inputs:
   allowedStatusCodes:
