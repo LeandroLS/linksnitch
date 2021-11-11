@@ -13,6 +13,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: LeandroLS/linksnitch@main
+        with:
+          allowedStatusCodes: '[200, 201]'
 ```
 
 If your README.md  has broken links, the workflow will fail and will show to you what links is broken.

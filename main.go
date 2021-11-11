@@ -2,8 +2,10 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
-	"log"
+	"html/template"
+	"io"
 	"net/http"
 	"os"
 	"time"
@@ -14,16 +16,18 @@ import (
 
 func main() {
 	markDown, err := os.ReadFile("README.md")
-	check(err)
+	handleErr(err)
 	htmlBytes := markdown.ToHTML(markDown, nil, nil)
 	bReader := bytes.NewReader(htmlBytes)
 	htmlParsed, err := html.Parse(bReader)
-	check(err)
+	handleErr(err)
 	links := GetHtmlTags(htmlParsed, "a", "href", nil)
 	ms, _ := time.ParseDuration("0.35s")
 	var badLinks []string
-	statusCodes := os.Getenv("INPUT_ALLOWEDSTATUSCODES")
-	fmt.Println("status codes", statusCodes)
+	statusCodesJson := os.Getenv("INPUT_ALLOWEDSTATUSCODES")
+	var statusCodeArr []int
+	err = json.Unmarshal([]byte(statusCodesJson), &statusCodeArr)
+	handleErr(err)
 	if len(links) < 1 {
 		fmt.Println("No links found.")
 	} else {
@@ -34,14 +38,16 @@ func main() {
 				continue
 			}
 			defer resp.Body.Close()
-			if resp.StatusCode != 200 {
+
+			if !contains(statusCodeArr, resp.StatusCode) {
 				badLinks = append(badLinks, links[i])
 			}
 			time.Sleep(ms)
 		}
 	}
 	if len(badLinks) >= 1 {
-		log.Fatalf("Bad Links %s", badLinks)
+		logBadLinksFound(os.Stdout, badLinks)
+		os.Exit(1)
 	} else {
 		fmt.Println("All links works.")
 	}
@@ -61,8 +67,31 @@ func GetHtmlTags(n *html.Node, rawHtmlTag string, htmlTagKey string, tags []stri
 	return tags
 }
 
-func check(e error) {
+func handleErr(e error) {
 	if e != nil {
 		panic(e)
 	}
+}
+
+func logBadLinksFound(writer io.Writer, links []string) {
+	templateStr := `-------------------
+Bad links found
+{{range $val := .}}
+{{$val}}
+{{end}}
+-------------------
+`
+	tmpl, err := template.New("LogMessage").Parse(templateStr)
+	handleErr(err)
+	err = tmpl.Execute(writer, links)
+	handleErr(err)
+}
+
+func contains(s []int, e int) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
 }
