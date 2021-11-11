@@ -1,4 +1,4 @@
-# linksnitch
+# linksnitch 🔗
 
 A GitHub Action that automatically check if some link in your README.md is broken or not responding.
 
@@ -16,5 +16,4 @@ jobs:
         with:
           allowedStatusCodes: '[200, 201]'
 ```
-
-If your README.md  has broken links, the workflow will fail and will show to you what links is broken.
+In `allowdStatusCodes` you can set all the status codes that your links can return. If your README.md has some link that don't return one of the status codes set in `allowedStatusCodes` the workflow will fail and will show to you what links is broken.
