@@ -7,25 +7,19 @@ on:
     branches: [ main ]
 
 jobs:
-
   test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-
+    - name: Go mod init
+      run: go mod init github.com/LeandroLS/linksnitch
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
         go-version: 1.17
-    
-    - name: Go mod init
-      run: go mod init
 
-    - name: Go get
-      run: go get -d -v ./...
-    
-    - name: Go install
-      run: go install -v ./...
+    - name: Build
+      run: go build -v ./...
 
     - name: Test
       run: go test -v ./...
