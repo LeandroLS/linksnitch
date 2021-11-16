@@ -17,3 +17,6 @@ jobs:
           allowedStatusCodes: '[200, 201]'
 ```
 In `allowdStatusCodes` you can set all the status codes that your links can return. If your README.md has some link that don't return one of the status codes set in `allowedStatusCodes` the workflow will fail and will show to you what links is broken.
+
+#### Badges
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/LeandroLS/linksnitch/test)
