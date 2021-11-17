@@ -1,11 +1,19 @@
 package main
 
 import (
+	"bytes"
 	"strings"
 	"testing"
 
 	"golang.org/x/net/html"
 )
+
+func checkIfIsExpected(t *testing.T, result, expected string) {
+	t.Helper()
+	if result != expected {
+		t.Errorf("result '%s', expected '%s'", result, expected)
+	}
+}
 
 func TestGetHtmlTags(t *testing.T) {
 	sReader := strings.NewReader(`
@@ -18,4 +26,18 @@ func TestGetHtmlTags(t *testing.T) {
 	if len(tags) < expected {
 		t.Errorf("result '%d', expected '%d'", len(tags), expected)
 	}
+}
+
+func TestLogBadLinksFound(t *testing.T) {
+	links := []string{"https://badlink.com1"}
+	buffer := bytes.Buffer{}
+	logBadLinksFound(&buffer, links)
+	expected := `-------------------
+Bad links found
+
+https://badlink.com1
+
+-------------------
+`
+	checkIfIsExpected(t, buffer.String(), expected)
 }
