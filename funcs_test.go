@@ -21,7 +21,7 @@ func TestGetHtmlTags(t *testing.T) {
 	<a href="test2.golang">
 `)
 	doc, _ := html.Parse(sReader)
-	tags := GetHtmlTags(doc, "a", "href", nil)
+	tags := getHtmlTags(doc, "a", "href", nil)
 	expected := 2
 	if len(tags) < expected {
 		t.Errorf("result '%d', expected '%d'", len(tags), expected)
