@@ -21,39 +21,44 @@ func main() {
 	bReader := bytes.NewReader(htmlBytes)
 	htmlParsed, err := html.Parse(bReader)
 	handleErr(err)
-	links := GetHtmlTags(htmlParsed, "a", "href", nil)
-	ms, _ := time.ParseDuration("0.35s")
-	var badLinks []string
-	statusCodesJson := os.Getenv("INPUT_ALLOWEDSTATUSCODES")
-	var statusCodeArr []int
-	err = json.Unmarshal([]byte(statusCodesJson), &statusCodeArr)
-	handleErr(err)
-	if len(links) < 1 {
-		fmt.Println("No links found.")
-	} else {
-		for i := 0; i < len(links); i++ {
-			resp, err := http.Get(links[i])
-			if err != nil {
-				badLinks = append(badLinks, links[i])
-				continue
-			}
-			defer resp.Body.Close()
-
-			if !contains(statusCodeArr, resp.StatusCode) {
-				badLinks = append(badLinks, links[i])
-			}
-			time.Sleep(ms)
+	links := getHtmlTags(htmlParsed, "a", "href", nil)
+	if len(links) > 1 {
+		badLinks := getBadLinks(links)
+		if len(badLinks) >= 1 {
+			logBadLinksFound(os.Stdout, badLinks)
+			os.Exit(1)
+		} else {
+			fmt.Println("All links works.")
 		}
-	}
-	if len(badLinks) >= 1 {
-		logBadLinksFound(os.Stdout, badLinks)
-		os.Exit(1)
 	} else {
-		fmt.Println("All links works.")
+		fmt.Println("No links found.")
 	}
 }
 
-func GetHtmlTags(n *html.Node, rawHtmlTag string, htmlTagKey string, tags []string) []string {
+func getBadLinks(links []string) []string {
+	statusCodesJson := os.Getenv("INPUT_ALLOWEDSTATUSCODES")
+	var statusCodeArr []int
+	err := json.Unmarshal([]byte(statusCodesJson), &statusCodeArr)
+	handleErr(err)
+	var badLinks []string
+	ms, _ := time.ParseDuration("0.35s")
+	for i := 0; i < len(links); i++ {
+		resp, err := http.Get(links[i])
+		if err != nil {
+			badLinks = append(badLinks, links[i])
+			continue
+		}
+		defer resp.Body.Close()
+
+		if !contains(statusCodeArr, resp.StatusCode) {
+			badLinks = append(badLinks, links[i])
+		}
+		time.Sleep(ms)
+	}
+	return badLinks
+}
+
+func getHtmlTags(n *html.Node, rawHtmlTag string, htmlTagKey string, tags []string) []string {
 	if n.Type == html.ElementNode && n.Data == rawHtmlTag {
 		for _, a := range n.Attr {
 			if a.Key == htmlTagKey {
@@ -62,7 +67,7 @@ func GetHtmlTags(n *html.Node, rawHtmlTag string, htmlTagKey string, tags []stri
 		}
 	}
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		tags = GetHtmlTags(c, rawHtmlTag, htmlTagKey, tags)
+		tags = getHtmlTags(c, rawHtmlTag, htmlTagKey, tags)
 	}
 	return tags
 }
