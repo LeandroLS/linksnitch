@@ -35,11 +35,16 @@ func main() {
 	}
 }
 
-func getBadLinks(links []string) []string {
+func getAllowedStatusCodes() []int {
 	statusCodesJson := os.Getenv("INPUT_ALLOWEDSTATUSCODES")
 	var statusCodeArr []int
 	err := json.Unmarshal([]byte(statusCodesJson), &statusCodeArr)
 	handleErr(err)
+	return statusCodeArr
+}
+
+func getBadLinks(links []string) []string {
+	statusCodesArr := getAllowedStatusCodes()
 	var badLinks []string
 	ms, _ := time.ParseDuration("0.35s")
 	for i := 0; i < len(links); i++ {
@@ -50,7 +55,7 @@ func getBadLinks(links []string) []string {
 		}
 		defer resp.Body.Close()
 
-		if !contains(statusCodeArr, resp.StatusCode) {
+		if !contains(statusCodesArr, resp.StatusCode) {
 			badLinks = append(badLinks, links[i])
 		}
 		time.Sleep(ms)
