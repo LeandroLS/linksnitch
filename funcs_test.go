@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"os"
 	"strings"
 	"testing"
 
@@ -40,4 +41,12 @@ https://badlink.com1
 -------------------
 `
 	checkIfIsExpected(t, buffer.String(), expected)
+}
+
+func TestGetAllowedStatusCodes(t *testing.T) {
+	os.Setenv("INPUT_ALLOWEDSTATUSCODES", "[200]")
+	statusCodes := getAllowedStatusCodes()
+	if statusCodes[0] != 200 {
+		t.Errorf("result '%d', expected '%d'", statusCodes[0], 200)
+	}
 }
