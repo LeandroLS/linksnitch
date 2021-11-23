@@ -6,15 +6,9 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/LeandroLS/valoop"
 	"golang.org/x/net/html"
 )
-
-func checkIfIsExpected(t *testing.T, result, expected string) {
-	t.Helper()
-	if result != expected {
-		t.Errorf("result '%s', expected '%s'", result, expected)
-	}
-}
 
 func TestGetHtmlTags(t *testing.T) {
 	sReader := strings.NewReader(`
@@ -24,7 +18,7 @@ func TestGetHtmlTags(t *testing.T) {
 	doc, _ := html.Parse(sReader)
 	tags := getHtmlTags(doc, "a", "href", nil)
 	expected := 2
-	if len(tags) < expected {
+	if !valoop.IsSameValue(len(tags), expected) {
 		t.Errorf("result '%d', expected '%d'", len(tags), expected)
 	}
 }
@@ -40,13 +34,15 @@ https://badlink.com1
 
 -------------------
 `
-	checkIfIsExpected(t, buffer.String(), expected)
+	if !valoop.IsSameValue(buffer.String(), expected) {
+		t.Errorf("result '%s', expected '%s'", buffer.String(), expected)
+	}
 }
 
 func TestGetAllowedStatusCodes(t *testing.T) {
 	os.Setenv("INPUT_ALLOWEDSTATUSCODES", "[200]")
 	statusCodes := getAllowedStatusCodes()
-	if statusCodes[0] != 200 {
+	if !valoop.IsSameValue(statusCodes[0], 200) {
 		t.Errorf("result '%d', expected '%d'", statusCodes[0], 200)
 	}
 }
