@@ -1,9 +1,9 @@
-github.com/LeandroLS/valoop v0.0.0-20211124012927-40ba1319d02c h1:JhWMOQrqtuI0pAcp8KwOuRV29GtxYcv25H4lnOYAW9E=
-github.com/LeandroLS/valoop v0.0.0-20211124012927-40ba1319d02c/go.mod h1:ctFuyJChm0L0U/N1qY91ORcUXR0Zhlvpsgmt99kd2x4=
+github.com/LeandroLS/valoop v0.0.0-20211124030210-deabbeeb6e6d h1:nFCq6o1WcOJf1+sRj/IA3EjnUYiqYEs6t/OzzyqN8nA=
+github.com/LeandroLS/valoop v0.0.0-20211124030210-deabbeeb6e6d/go.mod h1:f5hy9VYn38oZ2Zt9wDjFR+NztSNZaVptOKVJKw2MFt4=
 github.com/gomarkdown/markdown v0.0.0-20211105120026-16f708f914c3 h1:YYPIb87JCyLEK3Iw/dfgmpLm2cL2Qc7JNNdYdE87b9s=
 github.com/gomarkdown/markdown v0.0.0-20211105120026-16f708f914c3/go.mod h1:JDGcbDT52eL4fju3sZ4TeHGsQwhG9nbDV21aMyhwPoA=
-golang.org/x/net v0.0.0-20211111160137-58aab5ef257a h1:c83jeVQW0KGKNaKBRfelNYNHaev+qawl9yaA825s8XE=
-golang.org/x/net v0.0.0-20211111160137-58aab5ef257a/go.mod h1:9nx3DQGgdP8bBQD5qxJ1jj9UTztislL4KSBs9R2vV5Y=
+golang.org/x/net v0.0.0-20211123203042-d83791d6bcd9 h1:0qxwC5n+ttVOINCBeRHO0nq9X7uy8SDsPoi5OaCdIEI=
+golang.org/x/net v0.0.0-20211123203042-d83791d6bcd9/go.mod h1:9nx3DQGgdP8bBQD5qxJ1jj9UTztislL4KSBs9R2vV5Y=
 golang.org/x/sys v0.0.0-20201119102817-f84b799fce68/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20210423082822-04245dca01da/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1/go.mod h1:bj7SfCRtBDWHUb9snDiAeCFNEtKQo2Wmx5Cou7ajbmo=
