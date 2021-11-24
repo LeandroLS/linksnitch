@@ -1,7 +1,7 @@
-github.com/LeandroLS/valoop v0.0.0-20211123230107-4161faae1a3f h1:/dYV6Ms3PSPAyrmW9a05R5itfd7IBp18xpEIk1CPB2o=
-github.com/LeandroLS/valoop v0.0.0-20211123230107-4161faae1a3f/go.mod h1:ctFuyJChm0L0U/N1qY91ORcUXR0Zhlvpsgmt99kd2x4=
 github.com/LeandroLS/valoop v0.0.0-20211123230358-d30f1869acee h1:LiA4jZu7H1746foLp6M3lA361o3CxGpkKn01Repbj5g=
 github.com/LeandroLS/valoop v0.0.0-20211123230358-d30f1869acee/go.mod h1:ctFuyJChm0L0U/N1qY91ORcUXR0Zhlvpsgmt99kd2x4=
+github.com/LeandroLS/valoop v0.0.0-20211124012927-40ba1319d02c h1:JhWMOQrqtuI0pAcp8KwOuRV29GtxYcv25H4lnOYAW9E=
+github.com/LeandroLS/valoop v0.0.0-20211124012927-40ba1319d02c/go.mod h1:ctFuyJChm0L0U/N1qY91ORcUXR0Zhlvpsgmt99kd2x4=
 github.com/gomarkdown/markdown v0.0.0-20211105120026-16f708f914c3 h1:YYPIb87JCyLEK3Iw/dfgmpLm2cL2Qc7JNNdYdE87b9s=
 github.com/gomarkdown/markdown v0.0.0-20211105120026-16f708f914c3/go.mod h1:JDGcbDT52eL4fju3sZ4TeHGsQwhG9nbDV21aMyhwPoA=
 golang.org/x/net v0.0.0-20211111160137-58aab5ef257a h1:c83jeVQW0KGKNaKBRfelNYNHaev+qawl9yaA825s8XE=
