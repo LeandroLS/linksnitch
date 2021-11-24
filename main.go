@@ -10,6 +10,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/LeandroLS/valoop"
 	"github.com/gomarkdown/markdown"
 	"golang.org/x/net/html"
 )
@@ -55,7 +56,7 @@ func getBadLinks(links []string) []string {
 		}
 		defer resp.Body.Close()
 
-		if !contains(statusCodesArr, resp.StatusCode) {
+		if !valoop.IntSliceContains(statusCodesArr, resp.StatusCode) {
 			badLinks = append(badLinks, links[i])
 		}
 		time.Sleep(ms)
@@ -95,13 +96,4 @@ Bad links found
 	handleErr(err)
 	err = tmpl.Execute(writer, links)
 	handleErr(err)
-}
-
-func contains(s []int, e int) bool {
-	for _, a := range s {
-		if a == e {
-			return true
-		}
-	}
-	return false
 }
