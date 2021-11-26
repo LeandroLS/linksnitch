@@ -24,18 +24,18 @@ func TestGetHtmlTags(t *testing.T) {
 }
 
 func TestLogBadLinksFound(t *testing.T) {
-	links := []string{"https://badlink.com1"}
+	links := []BadLink{
+		{"https://badlink.com", 404},
+	}
 	buffer := bytes.Buffer{}
 	logBadLinksFound(&buffer, links)
-	expected := `-------------------
-Bad links found
-
-https://badlink.com1
-
--------------------
+	expected := `Site                 Status Code
+----                 -----------
+https://badlink.com  404
 `
 	if !valoop.IsSameValue(buffer.String(), expected) {
-		t.Errorf("result '%s', expected '%s'", buffer.String(), expected)
+		t.Errorf("result %s\n", buffer.String())
+		t.Errorf("expected %s", expected)
 	}
 }
 

@@ -4,16 +4,21 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"html/template"
 	"io"
 	"net/http"
 	"os"
+	"text/tabwriter"
 	"time"
 
 	"github.com/LeandroLS/valoop"
 	"github.com/gomarkdown/markdown"
 	"golang.org/x/net/html"
 )
+
+type BadLink struct {
+	url        string
+	statusCode int
+}
 
 func main() {
 	markDown, err := os.ReadFile("README.md")
@@ -23,7 +28,7 @@ func main() {
 	htmlParsed, err := html.Parse(bReader)
 	handleErr(err)
 	links := getHtmlTags(htmlParsed, "a", "href", nil)
-	if len(links) > 1 {
+	if len(links) >= 1 {
 		badLinks := getBadLinks(links)
 		if len(badLinks) >= 1 {
 			logBadLinksFound(os.Stdout, badLinks)
@@ -41,23 +46,24 @@ func getAllowedStatusCodes() []int {
 	var statusCodeArr []int
 	err := json.Unmarshal([]byte(statusCodesJson), &statusCodeArr)
 	handleErr(err)
+	statusCodeArr = append(statusCodeArr, 200)
 	return statusCodeArr
 }
 
-func getBadLinks(links []string) []string {
+func getBadLinks(links []string) []BadLink {
 	statusCodesArr := getAllowedStatusCodes()
-	var badLinks []string
+	var badLinks []BadLink
 	ms, _ := time.ParseDuration("0.35s")
 	for i := 0; i < len(links); i++ {
 		resp, err := http.Get(links[i])
 		if err != nil {
-			badLinks = append(badLinks, links[i])
+			badLinks = append(badLinks, BadLink{links[i], 0})
 			continue
 		}
 		defer resp.Body.Close()
 
 		if !valoop.IntSliceContains(statusCodesArr, resp.StatusCode) {
-			badLinks = append(badLinks, links[i])
+			badLinks = append(badLinks, BadLink{links[i], resp.StatusCode})
 		}
 		time.Sleep(ms)
 	}
@@ -84,16 +90,14 @@ func handleErr(e error) {
 	}
 }
 
-func logBadLinksFound(writer io.Writer, links []string) {
-	templateStr := `-------------------
-Bad links found
-{{range $val := .}}
-{{$val}}
-{{end}}
--------------------
-`
-	tmpl, err := template.New("LogMessage").Parse(templateStr)
-	handleErr(err)
-	err = tmpl.Execute(writer, links)
-	handleErr(err)
+func logBadLinksFound(writer io.Writer, links []BadLink) {
+	w := tabwriter.NewWriter(writer, 0, 8, 2, ' ', 0)
+	format := "%v\t%v\n"
+	fmt.Fprintf(w, format, "Site", "Status Code")
+	fmt.Fprintf(w, format, "----", "-----------")
+
+	for _, link := range links {
+		fmt.Fprintf(w, format, link.url, link.statusCode)
+	}
+	w.Flush()
 }
