@@ -28,17 +28,17 @@ func main() {
 	htmlParsed, err := html.Parse(bReader)
 	handleErr(err)
 	links := getHtmlTags(htmlParsed, "a", "href", nil)
-	if len(links) >= 1 {
-		badLinks := getBadLinks(links)
-		if len(badLinks) >= 1 {
-			logBadLinksFound(os.Stdout, badLinks)
-			os.Exit(1)
-		} else {
-			fmt.Println("All links works.")
-		}
-	} else {
+	if len(links) < 1 {
 		fmt.Println("No links found.")
+		return
 	}
+	badLinks := getBadLinks(links)
+	if len(badLinks) <= 1 {
+		fmt.Println("All links works.")
+		return
+	}
+	logBadLinksFound(os.Stdout, badLinks)
+	os.Exit(1)
 }
 
 func getAllowedStatusCodes() []int {
