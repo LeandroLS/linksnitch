@@ -33,7 +33,7 @@ func main() {
 		return
 	}
 	badLinks := getBadLinks(links)
-	if len(badLinks) <= 1 {
+	if len(badLinks) < 1 {
 		fmt.Println("All links works.")
 		return
 	}
