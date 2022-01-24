@@ -1,6 +1,6 @@
 # linksnitch 🔗
 
-A GitHub Action that automatically check if some link in your README.md is broken or not responding.
+A GitHub Action that automatically check the status codes response of links in README.md. Useful for checking broken links.
 
 ## How to use
 ```yml
