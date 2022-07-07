@@ -3,6 +3,7 @@
 A GitHub Action that automatically check the status codes response of links in README.md. Useful for checking broken links.
 
 ## How to use
+In your `.yml` workflow file:
 ```yml
 name: A workflow that check if links in README.md is working
 on: push
